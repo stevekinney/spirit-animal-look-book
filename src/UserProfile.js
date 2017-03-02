@@ -6,15 +6,30 @@ import './UserProfile.css';
 class UserProfile extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+
+    this.state = {
+      uploadProgress: 0
+    };
+
+    this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
-  handleChange(event) {
+  handleFileUpload(event) {
     const file = event.target.files[0];
     const { user } = this.props;
 
-    storage.ref(`user-images/${user.uid}/${file.name}`).put(file).then((snapshot) => {
-      database.ref('users').child(user.uid).child('image').set(snapshot.downloadURL);
+    const storageRef = storage.ref(`user-images/${user.uid}/${file.name}`);
+    const userImageRef = database.ref('users').child(user.uid).child('image');
+
+    const uploadTask = storageRef.put(file);
+
+    uploadTask.on('state_changed', (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(`${progress}%`);
+    });
+
+    uploadTask.then((snapshot) => {
+      userImageRef.set(snapshot.downloadURL);
     });
   }
 
@@ -35,7 +50,7 @@ class UserProfile extends Component {
                      accept=".png,.gif,.jpg"
                      placeholder={image || "Spirit Animal Image"}
                      className="UserProfile--upload"
-                     onChange={this.handleChange} />
+                     onChange={this.handleFileUpload} />
         </div>
       </article>
     );
