@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { auth, database } from './firebase';
 import UserInfo from './UserInfo';
 import SignIn from './SignIn';
+import pick from 'lodash/pick';
 
 class App extends Component {
   constructor(props) {
@@ -9,15 +10,26 @@ class App extends Component {
     this.usersRef = null;
     this.userRef = null;
     this.state = {
-      user: null
+      user: null,
+      users: {}
     };
   }
 
   componentWillMount() {
     auth.onAuthStateChanged((user) => {
       this.setState({ user });
-      this.usersRef = database.child('users');
-      this.userRef = database.child('users').child(user.uid);
+      this.usersRef = database.ref('users');
+      this.userRef = this.usersRef.child(user.uid);
+
+      this.userRef.once('value').then((snapshot) => {
+        if (snapshot.val()) return;
+        const userInfo = pick(user, ['displayName', 'photoURL', 'email']);
+        this.userRef.set(userInfo);
+      });
+
+      this.usersRef.on('value', (snapshot) => {
+        this.setState({ users: snapshot.val() });
+      });
     });
   }
 
