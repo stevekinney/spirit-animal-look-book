@@ -1,0 +1,33 @@
+html, body {
+  box-sizing: border-box;
+}
+
+body, input {
+  font: menu;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  max-width: 600px;
+  margin: auto;
+}
+
+.App--header {
+  text-align: center;
+}
+
+.UserInfo {
+  display: flex;
+  background-color: #EEE;
+  border: 1px solid #AAA;
+}
+
+.UserInfo--photo {
+  max-width: 100px;
+  max-height: 100px;
+  margin-right: 1em;
+}
