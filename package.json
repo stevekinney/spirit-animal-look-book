@@ -6,7 +6,8 @@
     "firebase": "^3.7.0",
     "lodash": "^4.17.4",
     "react": "15.4.2",
-    "react-dom": "15.4.2"
+    "react-dom": "15.4.2",
+    "react-file-input": "^0.2.5"
   },
   "devDependencies": {
     "react-scripts": "0.9.3"

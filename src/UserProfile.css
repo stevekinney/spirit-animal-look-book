@@ -1,0 +1,18 @@
+.UserProfiles {
+  display: flex;
+  margin: 1em 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.UserProfile {
+  max-width: 30%;
+  border: 1px solid #EEE;
+  text-align: center;
+  padding: 1em;
+  margin: 1em;
+}
+
+.UserProfile img {
+  max-width: 100%;
+}

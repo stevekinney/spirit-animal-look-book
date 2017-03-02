@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { auth, database } from './firebase';
 import UserInfo from './UserInfo';
 import SignIn from './SignIn';
-import pick from 'lodash/pick';
+import UserProfile from './UserProfile';
+import pick from 'lodash/pick' ;
+import map from 'lodash/map';
 
 class App extends Component {
   constructor(props) {
@@ -19,13 +21,16 @@ class App extends Component {
     auth.onAuthStateChanged((user) => {
       this.setState({ user });
       this.usersRef = database.ref('users');
-      this.userRef = this.usersRef.child(user.uid);
 
-      this.userRef.once('value').then((snapshot) => {
-        if (snapshot.val()) return;
-        const userInfo = pick(user, ['displayName', 'photoURL', 'email']);
-        this.userRef.set(userInfo);
-      });
+      if (user) {
+        this.userRef = this.usersRef.child(user.uid);
+
+        this.userRef.once('value').then((snapshot) => {
+          if (snapshot.val()) return;
+          const userInfo = pick(user, ['displayName', 'photoURL', 'email']);
+          this.userRef.set(userInfo);
+        });
+      }
 
       this.usersRef.on('value', (snapshot) => {
         this.setState({ users: snapshot.val() });
@@ -34,7 +39,7 @@ class App extends Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { user, users } = this.state;
 
     return (
       <div className="App">
@@ -43,6 +48,13 @@ class App extends Component {
         </header>
         { user
           ? <div>
+              <section className="UserProfiles">
+                {
+                  map(users, (profile, key) => (
+                    <UserProfile key={key} {...profile} user={user} />
+                  ))
+                }
+              </section>
               <UserInfo user={user} />
             </div>
           : <SignIn />
