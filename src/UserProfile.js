@@ -13,7 +13,6 @@ class UserProfile extends Component {
     };
 
     this.handleFileUpload = this.handleFileUpload.bind(this);
-    this.handleDeleteFile = this.handleDeleteFile.bind(this);
   }
 
   handleFileUpload(event) {
