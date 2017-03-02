@@ -33,7 +33,7 @@ class UserProfile extends Component {
           <p className="UserProfile--email">{ email }</p>
           <FileInput name="UserProfile--fileinput"
                      accept=".png,.gif,.jpg"
-                     placeholder="Spirit Animal Image"
+                     placeholder={image || "Spirit Animal Image"}
                      className="UserProfile--upload"
                      onChange={this.handleChange} />
         </div>
