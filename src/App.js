@@ -50,8 +50,8 @@ class App extends Component {
           ? <div>
               <section className="UserProfiles">
                 {
-                  map(users, (profile, key) => (
-                    <UserProfile key={key} {...profile} user={user} />
+                  map(users, (profile, uid) => (
+                    <UserProfile key={uid} {...profile} uid={uid} user={user} />
                   ))
                 }
               </section>
