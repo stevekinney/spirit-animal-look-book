@@ -53,7 +53,12 @@ class UserProfile extends Component {
 
     return (
       <article className="UserProfile">
-        { uploadProgress && <div>{ uploadProgress }%</div> }
+        {
+          uploadProgress &&
+          <div>
+            <strong>Uploading</strong>: { Math.round(uploadProgress) }%
+          </div>
+        }
         <img
           className="UserProfile--photo"
           src={ imageURL || photoURL }
