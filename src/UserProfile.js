@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import FileInput from 'react-file-input';
 import { storage, database } from './firebase';
-import url from 'url';
 import './UserProfile.css';
 
 class UserProfile extends Component {
@@ -12,17 +11,17 @@ class UserProfile extends Component {
       uploadProgress: null
     };
 
+    this.userRef = database.ref('users').child(props.uid);
+    this.storageRef = storage.ref('user-images').child(props.uid);
+
     this.handleFileUpload = this.handleFileUpload.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleFileUpload(event) {
     const file = event.target.files[0];
-    const { uid } = this.props;
-
-    const storageRef = storage.ref('user-images').child(uid).child(file.name);
-    const userImageRef = database.ref('users').child(uid).child('image');
-
-    const uploadTask = storageRef.put(file);
+    const uploadTask = this.storageRef.child(file.name)
+                                      .put(file, { contentType: file.type });
 
     uploadTask.on('state_changed', (snapshot) => {
       const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -30,13 +29,26 @@ class UserProfile extends Component {
     });
 
     uploadTask.then((snapshot) => {
-      userImageRef.set(snapshot.downloadURL);
+      this.userRef.update({
+        imageURL: snapshot.downloadURL,
+        imageName: file.name
+      });
       this.setState({ uploadProgress: null });
     });
   }
 
+  handleDelete() {
+    const { imageName } = this.props;
+    this.storageRef.child(imageName).delete().then(() => {
+      this.userRef.update({
+        imageURL: null,
+        imageName: null
+      });
+    });
+  }
+
   render() {
-    const { photoURL, displayName, email, image } = this.props;
+    const { photoURL, displayName, email, imageURL, imageName } = this.props;
     const { uploadProgress } = this.state;
 
     return (
@@ -44,7 +56,7 @@ class UserProfile extends Component {
         { uploadProgress && <div>{ uploadProgress }%</div> }
         <img
           className="UserProfile--photo"
-          src={ image || photoURL }
+          src={ imageURL || photoURL }
           alt={ displayName }
         />
         <div className="UserProfile--identification">
@@ -52,13 +64,23 @@ class UserProfile extends Component {
           <p className="UserProfile--email">{ email }</p>
           <FileInput name="UserProfile--fileinput"
                      accept=".png,.gif,.jpg"
-                     placeholder={image || "Spirit Animal Image"}
+                     placeholder={imageName || "Spirit Animal Image"}
                      className="UserProfile--upload"
                      onChange={this.handleFileUpload} />
+          { imageName && <button onClick={this.handleDelete}>Delete Image</button> }
         </div>
       </article>
     );
   }
 }
+
+UserProfile.propTypes = {
+  displayName: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  imageName: PropTypes.string,
+  imageURL: PropTypes.string,
+  photoURL: PropTypes.string.isRequired,
+  uid: PropTypes.string.isRequired
+};
 
 export default UserProfile;
