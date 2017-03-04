@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { auth, database } from './firebase';
-import UserInfo from './UserInfo';
+import CurrentUser from './CurrentUser';
 import SignIn from './SignIn';
 import UserProfile from './UserProfile';
 import pick from 'lodash/pick' ;
 import map from 'lodash/map';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class App extends Component {
                   ))
                 }
               </section>
-              <UserInfo user={user} />
+              <CurrentUser user={user} />
             </div>
           : <SignIn />
         }

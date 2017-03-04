@@ -6,7 +6,6 @@
 }
 
 .UserProfile {
-  max-width: 30%;
   border: 1px solid #EEE;
   text-align: center;
   padding: 1em;
@@ -14,5 +13,6 @@
 }
 
 .UserProfile img {
-  max-width: 100%;
+  max-width: 200px;
+  display: block;
 }
