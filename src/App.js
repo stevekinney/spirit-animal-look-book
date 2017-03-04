@@ -17,27 +17,6 @@ class App extends Component {
     };
   }
 
-  componentWillMount() {
-    auth.onAuthStateChanged((user) => {
-      this.setState({ user });
-      this.usersRef = database.ref('users');
-
-      if (user) {
-        this.userRef = this.usersRef.child(user.uid);
-
-        this.userRef.once('value').then((snapshot) => {
-          if (snapshot.val()) return;
-          const userInfo = pick(user, ['displayName', 'photoURL', 'email']);
-          this.userRef.set(userInfo);
-        });
-      }
-
-      this.usersRef.on('value', (snapshot) => {
-        this.setState({ users: snapshot.val() });
-      });
-    });
-  }
-
   render() {
     const { user, users } = this.state;
 
@@ -46,19 +25,7 @@ class App extends Component {
         <header className="App--header">
           <h1>Social Animals</h1>
         </header>
-        { user
-          ? <div>
-              <section className="UserProfiles">
-                {
-                  map(users, (profile, uid) => (
-                    <UserProfile key={uid} {...profile} uid={uid} user={user} />
-                  ))
-                }
-              </section>
-              <UserInfo user={user} />
-            </div>
-          : <SignIn />
-        }
+          <SignIn />
       </div>
     );
   }
