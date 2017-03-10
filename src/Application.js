@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { auth, database } from './firebase';
 import CurrentUser from './CurrentUser';
 import SignIn from './SignIn';
-import UserProfile from './UserProfile';
+import ProfileCard from './ProfileCard';
 import pick from 'lodash/pick' ;
 import map from 'lodash/map';
 import './App.css';
