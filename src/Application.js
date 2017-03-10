@@ -5,7 +5,7 @@ import SignIn from './SignIn';
 import ProfileCard from './ProfileCard';
 import pick from 'lodash/pick' ;
 import map from 'lodash/map';
-import './App.css';
+import './Application.css';
 
 class App extends Component {
   constructor(props) {
