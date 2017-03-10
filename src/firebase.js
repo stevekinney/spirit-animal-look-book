@@ -1,11 +1,11 @@
 import firebase from 'firebase';
 
 const config = {
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  storageBucket: '',
-  messagingSenderId: ''
+  apiKey: "AIzaSyC6yFStySrBXVYp2fGnhP0LqPpC8MnIreQ",
+  authDomain: "social-animals-c1b71.firebaseapp.com",
+  databaseURL: "https://social-animals-c1b71.firebaseio.com",
+  storageBucket: "social-animals-c1b71.appspot.com",
+  messagingSenderId: "212999125103"
 };
 
 firebase.initializeApp(config);
