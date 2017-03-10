@@ -15,7 +15,7 @@ class UserProfile extends Component {
     this.storageRef = storage.ref('user-images').child(props.uid);
 
     this.handleFileUpload = this.handleFileUpload.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
+    this.handleFileRemoval = this.handleFileRemoval.bind(this);
   }
 
   handleFileUpload(event) {
@@ -37,7 +37,7 @@ class UserProfile extends Component {
     });
   }
 
-  handleDelete() {
+  handleFileRemoval() {
     const { imageName } = this.props;
     this.storageRef.child(imageName).delete().then(() => {
       this.userRef.update({
@@ -72,7 +72,7 @@ class UserProfile extends Component {
                      placeholder={imageName || "Spirit Animal Image"}
                      className="UserProfile--upload"
                      onChange={this.handleFileUpload} />
-          { imageName && <button onClick={this.handleDelete}>Delete Image</button> }
+          { imageName && <button onClick={this.handleFileRemoval}>Delete Image</button> }
         </div>
       </article>
     );
